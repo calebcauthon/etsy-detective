@@ -23,18 +23,15 @@ exports.handleStart = async ({ request, page, browserController }) => {
     const { browser } = browserController;
     var result = await getLinks(page);
 
-    //console.log("result from search page", result);
-    console.log("result[0]", result[0]);
-
     var pagesToOpen = [result[0]];
-    console.log("pagesToOpen?", pagesToOpen);
     for(var key in pagesToOpen) {
         var row = pagesToOpen[key];
-        console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
+
         const listingPage = await browser.newPage();
         await listingPage.goto(url);
+        await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
         var seller = await listingPage.evaluate(() => {
             var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
