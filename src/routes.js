@@ -27,7 +27,7 @@ exports.handleStart = async ({ request, page, browser }) => {
 
     var pagesToOpen = [result[0]];
     console.log("pagesToOpen", pagesToOpen);
-    for(var row in pagesToOpen) {
+    pagesToOpen.forEach(async row => {
         console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
@@ -44,7 +44,7 @@ exports.handleStart = async ({ request, page, browser }) => {
         });
 
         console.log("seller", seller);
-    }
+    });
 
     console.log("done with handle start", result)
 };
