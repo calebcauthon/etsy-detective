@@ -2,21 +2,45 @@ const Apify = require('apify');
 
 const { utils: { log } } = Apify;
 
-exports.handleStart = async ({ request, page }) => {
+async function getListingLinksFromSearchResults(page) {
     var result = await page.evaluate(() => {
         function superTrim(text) {
             text = text.replaceAll('\n', '').trim();
             return text;
         }
         
-        var listings = $('a[href*=listing]').map((index, el) => {
-            return {
-                text: superTrim($(el).find('h3').text()),
-                href: el.href
-            };
+        var listingLinks = $('.v2-listing-card a[href*=listing]').map((index, el) => {
+            const listingLink = el.href;
+
+//
+//            return {
+//                text: superTrim($(el).find('h3').text()),
+//                listing_href: el.href,
+//                seller:
+//            };
+            return listingLink;
         }).get()
         return Promise.resolve(listings);
     });
+}
+
+
+exports.handleStart = async ({ request, page }) => {
+    var links = await getListingLinksFromSearchResults(page);    
+    console.log("listings found: ", links)
+
+    const link = links[0];
+    console.log("opening page: ${link}");
+    const listingPage = await browser.newPage();
+    await listingPage.goto(link);
+
+    var sellerName = await listingPage.evaluate(() => {
+        const sellerName = "test"
+        return sellerName;
+    });
+
+    console.log(`seller name is ${sellerName}`);
+
     console.log("done with handle start", result)
 };
 
