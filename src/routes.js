@@ -19,7 +19,8 @@ async function getLinks(page) {
     });
 }
 
-exports.handleStart = async ({ request, page, browser }) => {
+exports.handleStart = async ({ request, page, browserController }) => {
+    const { browser } = browserController;
     console.log("browser from handleStart", browser);
     var result = await getLinks(page);
 
@@ -28,7 +29,7 @@ exports.handleStart = async ({ request, page, browser }) => {
 
     var pagesToOpen = [result[0]];
     console.log("pagesToOpen?", pagesToOpen);
-    pagesToOpen.forEach((index, row) => {
+    pagesToOpen.forEach(row => {
         console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
