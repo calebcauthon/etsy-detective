@@ -27,7 +27,7 @@ exports.handleStart = async ({ request, page, browser }) => {
 
     var pagesToOpen = [result[0]];
     console.log("pagesToOpen", pagesToOpen);
-    pagesToOpen.forEach(async row => {
+    pagesToOpen.forEach(async (index, row) => {
         console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
