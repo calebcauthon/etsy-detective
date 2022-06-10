@@ -25,7 +25,7 @@ exports.handleStart = async ({ request, page }) => {
     var pagesToOpen = [result[0]];
     for(var row in pagesToOpen) {
         var url = row.href;
-        console.log("opening page ${url}");
+        console.log(`opening page ${url}`);
         const listingPage = await browser.newPage();
         await listingPage.goto(url);
 
