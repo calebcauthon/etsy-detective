@@ -31,6 +31,7 @@ Apify.main(async () => {
             useFingerprints: true,
         },
         handlePageFunction: async (context) => {
+            console.log("context", context);
             const { page } = context;
             await Apify.utils.puppeteer.injectJQuery(page);
             
