@@ -20,7 +20,7 @@ async function getListingLinksFromSearchResults(page) {
 //            };
             return listingLink;
         }).get()
-        return Promise.resolve(listings);
+        return Promise.resolve(listingLinks);
     });
 }
 
