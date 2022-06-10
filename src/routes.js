@@ -19,7 +19,7 @@ async function getLinks(page) {
     });
 }
 
-exports.handleStart = async ({ request, page }) => {
+exports.handleStart = async ({ request, page, browser }) => {
     var result = await getLinks(page);
 
     var pagesToOpen = [result[0]];
