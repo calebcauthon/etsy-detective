@@ -28,7 +28,8 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
     var pagesToOpen = [result[0]];
     console.log("pagesToOpen?", pagesToOpen);
-    for(var row in pagesToOpen) {
+    for(var key in pagesToOpen) {
+        var row = pagesToOpen[key];
         console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
