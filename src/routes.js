@@ -3,6 +3,7 @@ const Apify = require('apify');
 const { utils: { log } } = Apify;
 
 async function getListingLinksFromSearchResults(page) {
+    console.log('getting links.');
     var result = await page.evaluate(() => {
         function superTrim(text) {
             text = text.replaceAll('\n', '').trim();
