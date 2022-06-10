@@ -21,7 +21,6 @@ async function getLinks(page) {
 
 exports.handleStart = async ({ request, page, browserController }) => {
     const { browser } = browserController;
-    console.log("browser from handleStart", browser);
     var result = await getLinks(page);
 
     //console.log("result from search page", result);
@@ -29,24 +28,24 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
     var pagesToOpen = [result[0]];
     console.log("pagesToOpen?", pagesToOpen);
-    pagesToOpen.forEach(row => {
+    for(var row in pagesToOpen) {
         console.log("row", row);
         var url = row["href"];
         console.log(`opening page ${url}`);
-//        const listingPage = await browser.newPage();
-//        await listingPage.goto(url);
-//
-//        var seller = await listingPage.evaluate(() => {
-//            var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
-//
-//            return {
-//                name: shopLinkElement.text(),
-//                href: shopLinkElement.href
-//            }
-//        });
-//
-//        console.log("seller", seller)
-    });
+        const listingPage = await browser.newPage();
+        await listingPage.goto(url);
+
+        var seller = await listingPage.evaluate(() => {
+            var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
+
+            return {
+                name: shopLinkElement.text(),
+                href: shopLinkElement.href
+            }
+        });
+
+        console.log("seller", seller)
+    };
 
     console.log("done with handle start")
 };
