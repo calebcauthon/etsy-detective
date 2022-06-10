@@ -22,6 +22,25 @@ async function getLinks(page) {
 exports.handleStart = async ({ request, page }) => {
     var result = await getLinks(page);
 
+    var pagesToOpen = [result[0]];
+    for(var row in pagesToOpen) {
+        var url = row.href;
+        console.log("opening page ${url}");
+        const listingPage = await browser.newPage();
+        await listingPage.goto(url);
+
+        var seller = await listingPage.evaluate(() => {
+            var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
+
+            return {
+                name: shopLinkElement.text(),
+                href: shopLinkElement.href
+            }
+        });
+
+        console.log("seller", seller);
+    }
+
     console.log("done with handle start", result)
 };
 
