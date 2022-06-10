@@ -21,6 +21,7 @@ async function getListingLinks(page) {
 
 exports.handleStart = async ({ request, page }) => {
     var result = await getListingLinks(page); 
+    console.log("Listing links", result);
     console.log("done with handle start", result)
 };
 
