@@ -9,7 +9,8 @@ async function getListingLinksFromSearchResults(page) {
             return text;
         }
         
-        var listingLinks = $('a[href*=listing]').map((index, el) => {
+        var linkSelector = 'a[href*=listing]';
+        var listingLinks = $(linkSelector).map((index, el) => {
             const listingLink = el.href;
 
 //
