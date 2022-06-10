@@ -22,6 +22,8 @@ async function getLinks(page) {
 exports.handleStart = async ({ request, page, browser }) => {
     var result = await getLinks(page);
 
+    console.log("result from search page", result);
+
     var pagesToOpen = [result[0]];
     for(var row in pagesToOpen) {
         var url = row.href;
