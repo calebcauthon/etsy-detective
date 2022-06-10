@@ -2,8 +2,8 @@ const Apify = require('apify');
 
 const { utils: { log } } = Apify;
 
-async function getListingLinks(page) {
-    await page.evaluate(() => {
+exports.handleStart = async ({ request, page }) => {
+    var result = await page.evaluate(() => {
         function superTrim(text) {
             text = text.replaceAll('\n', '').trim();
             return text;
@@ -17,11 +17,7 @@ async function getListingLinks(page) {
         }).get()
         return Promise.resolve(listings);
     });
-}
 
-exports.handleStart = async ({ request, page }) => {
-    var result = await getListingLinks(page); 
-    console.log("Listing links", result);
     console.log("done with handle start", result)
 };
 
