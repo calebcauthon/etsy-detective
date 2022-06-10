@@ -9,7 +9,7 @@ exports.handleStart = async ({ request, page }) => {
             return text;
         }
         
-        var listings = $('a[href*=listing]').map((index, el) => {
+        var listings = $('.v2-listing-card a[href*=listing]').map((index, el) => {
             return {
                 text: superTrim($(el).find('h3').text()),
                 href: el.href
