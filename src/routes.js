@@ -9,7 +9,7 @@ async function getListingLinksFromSearchResults(page) {
             return text;
         }
         
-        var listingLinks = $('.v2-listing-card a[href*=listing]').map((index, el) => {
+        var listingLinks = $('a[href*=listing]').map((index, el) => {
             const listingLink = el.href;
 
 //
