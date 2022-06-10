@@ -20,13 +20,14 @@ async function getLinks(page) {
 }
 
 exports.handleStart = async ({ request, page, browser }) => {
+    console.log("browser from handleStart", browser);
     var result = await getLinks(page);
 
-    console.log("result from search page", result);
+    //console.log("result from search page", result);
     console.log("result[0]", result[0]);
 
     var pagesToOpen = [result[0]];
-    console.log("pagesToOpen", pagesToOpen);
+    console.log("pagesToOpen?", pagesToOpen);
     pagesToOpen.forEach(async (index, row) => {
         console.log("row", row);
         var url = row["href"];
