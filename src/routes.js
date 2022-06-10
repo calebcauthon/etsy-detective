@@ -23,10 +23,13 @@ exports.handleStart = async ({ request, page, browser }) => {
     var result = await getLinks(page);
 
     console.log("result from search page", result);
+    console.log("result[0]", result[0]);
 
     var pagesToOpen = [result[0]];
+    console.log("pagesToOpen", pagesToOpen);
     for(var row in pagesToOpen) {
-        var url = row.href;
+        console.log("row", row);
+        var url = row["href"];
         console.log(`opening page ${url}`);
         const listingPage = await browser.newPage();
         await listingPage.goto(url);
