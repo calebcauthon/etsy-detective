@@ -31,12 +31,15 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
         var seller = await listingPage.evaluate(() => {
             var shopLinkElement = $('.cart-col a[href*="shop"]').first();
-            var priceElement = $('div[data-buy-box-region="price"] p').first().trim();
+            var priceElement = $('div[data-buy-box-region="price"] p').first();
+
+            var reviewsBadge = $('#same-listing-reviews-tab .wt-badge')
 
             return {
                 name: shopLinkElement.text().trim(),
                 href: shopLinkElement.attr('href'),
-                price: priceElement.text()
+                price: priceElement.text().trim(),
+                reviewsCount: reviewsBadge.text().trim()
             }
         });
 
