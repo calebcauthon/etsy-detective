@@ -35,10 +35,15 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
         var seller = await listingPage.evaluate(() => {
-            var shopLinkElement = $('.cart-col a[href*="shop"]').get(0);
+            function superTrim(text) {
+                text = text.replaceAll('\n', '').trim();
+                return text;
+            }
+
+            var shopLinkElement = $('.cart-col a[href*="shop"]').first();
 
             return {
-                name: shopLinkElement.text(),
+                name: superTrim(shopLinkElement.text()),
                 href: shopLinkElement.href
             }
         });
