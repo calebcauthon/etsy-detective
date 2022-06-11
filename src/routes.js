@@ -31,6 +31,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
         const listingPage = await browser.newPage();
         await listingPage.goto(url);
+        await Apify.utils.puppeteer.injectJQuery(listingPage);
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
         var seller = await listingPage.evaluate(() => {
