@@ -44,7 +44,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
             return {
                 name: superTrim(shopLinkElement.text()),
-                href: shopLinkElement.href
+                href: shopLinkElement.attr('href')
             }
         });
 
