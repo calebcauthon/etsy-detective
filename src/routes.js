@@ -4,14 +4,9 @@ const { utils: { log } } = Apify;
 
 async function getLinks(page) {
     return await page.evaluate(() => {
-        function superTrim(text) {
-            text = text.replaceAll('\n', '').trim();
-            return text;
-        }
-        
         var listings = $('.v2-listing-card a[href*=listing]').map((index, el) => {
             return {
-                text: superTrim($(el).find('h3').text()),
+                text: $(el).find('h3').text().trim(),
                 href: el.href
             };
         }).get()
@@ -35,16 +30,13 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
         var seller = await listingPage.evaluate(() => {
-            function superTrim(text) {
-                text = text.replaceAll('\n', '').trim();
-                return text;
-            }
-
             var shopLinkElement = $('.cart-col a[href*="shop"]').first();
+            var priceElement = $('div[data-buy-box-region="price"] p').first().trim();
 
             return {
-                name: superTrim(shopLinkElement.text()),
-                href: shopLinkElement.attr('href')
+                name: shopLinkElement.text().trim(),
+                href: shopLinkElement.attr('href'),
+                price: priceElement.text()
             }
         });
 
