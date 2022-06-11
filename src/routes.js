@@ -35,7 +35,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
         var seller = await listingPage.evaluate(() => {
             var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
-            console.log
+            console.log("shopLinkElement", shopLinkEl);
 
             return {
                 name: shopLinkElement.text(),
