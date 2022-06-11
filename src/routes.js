@@ -35,8 +35,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
         var seller = await listingPage.evaluate(() => {
-            var shopLinkElement = $('.cart-col a[href*="shop"]')[0];
-            console.log("shopLinkElement", shopLinkElement);
+            var shopLinkElement = $('.cart-col a[href*="shop"]').get(0);
 
             return {
                 name: shopLinkElement.text(),
