@@ -101,7 +101,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
             });
             console.log("evaluating...done")
 
-            hasReviews = listing.hasMoreReviews;
+            hasReviews = thisListing.hasMoreReviews;
 
             if(hasReviews) {
                 console.log("clicking next via puppeteer");
