@@ -28,7 +28,6 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await listingPage.goto(url);
         await Apify.utils.puppeteer.injectJQuery(listingPage);
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
-        await listingPage.waitForSelector("*[data-reviews-pagination]", { timeout: 5000 });
 
         var hasReviews = true;
 
@@ -50,6 +49,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
             ]
         };
         while(hasReviews) {
+            console.log("evaluating...");
             var thisListing = await listingPage.evaluate(() => {
                 var hasMoreReviews = false;
                 var productName = $('*[data-buy-box-listing-title]').text().trim();
@@ -85,7 +85,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 var nextPageElement = $('*[data-reviews-pagination] .wt-action-group__item-container a').last();
                 if (nextPageElement.attr('aria-disabled') != "true") {
                     hasMoreReviews = true;    
-                    $('*[data-reviews-pagination] .wt-action-group__item-container a').click();
+                    //nextPageElement.click();
                 }
 
                 return {
@@ -99,10 +99,13 @@ exports.handleStart = async ({ request, page, browserController }) => {
                     reviewsBySegment: reviewsBySegment
                 }
             });
+            console.log("evaluating...done")
 
             hasReviews = listing.hasMoreReviews;
 
             if(hasReviews) {
+                console.log("clicking next via puppeteer");
+                await listingPage.click('*[data-reviews-pagination] .wt-action-group__item-container a');
                 await listingPage.waitFor(3000);
             }
 
