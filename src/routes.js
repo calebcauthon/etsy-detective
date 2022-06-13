@@ -110,6 +110,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 await listingPage.waitFor(3000);
             }
 
+            thisListing.product = url;
             thisListing.pageNumberReached = listing.pageNumberReached + 1;
             thisListing.reviewsBySegment.forEach(segment => {
                 var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
@@ -121,7 +122,6 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
             listing = thisListing;
         }
-        listing.product = url;
 
         console.log("listing", listing)
     };
