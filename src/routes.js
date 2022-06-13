@@ -18,7 +18,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
     const { browser } = browserController;
     var result = await getLinks(page);
 
-    var pagesToOpen = [result[0]];
+    var pagesToOpen = [result[0], result[1], result[2]];
     for(var key in pagesToOpen) {
         var row = pagesToOpen[key];
         var url = row["href"];
