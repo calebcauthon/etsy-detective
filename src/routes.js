@@ -91,7 +91,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                     hasMoreReviews,
                     title: productName,
                     name: shopLinkElement.text().trim(),
-                    href: shopLinkElement.attr('href'),
+                    shop: shopLinkElement.attr('href'),
                     price: priceElement.text().trim(),
                     reviewsCount: reviewCount,
                     reviewsBySegment: reviewsBySegment
@@ -105,9 +105,6 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 await listingPage.waitFor(3000);
             }
 
-            console.log("thisListing", thisListing);
-            console.log("listing", listing);
-
             thisListing.reviewsBySegment.forEach(segment => {
                 var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
                     return thisSegment.when[0] == segment.when[0] && thisSegment.when[1] == segment.when[1];
@@ -117,8 +114,9 @@ exports.handleStart = async ({ request, page, browserController }) => {
             })
 
             listing = thisListing;
-        }
 
+        }
+        listing.product = url;
         console.log("listing", listing)
     };
 
