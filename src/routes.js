@@ -28,6 +28,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await listingPage.goto(url);
         await Apify.utils.puppeteer.injectJQuery(listingPage);
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
+        await listingPage.waitForSelector("$('*[data-reviews-pagination]", { timeout: 5000 });
 
         var hasReviews = true;
 
