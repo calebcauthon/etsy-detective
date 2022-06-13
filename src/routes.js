@@ -84,6 +84,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 var nextPageElement = $('*[data-reviews-pagination] .wt-action-group__item-container a').last();
                 if (nextPageElement.attr('aria-disabled') != "true") {
                     hasMoreReviews = true;    
+                    $('*[data-reviews-pagination] .wt-action-group__item-container a').click();
                 }
 
                 return {
@@ -100,7 +101,6 @@ exports.handleStart = async ({ request, page, browserController }) => {
             hasReviews = listing.hasMoreReviews;
 
             if(hasReviews) {
-                await listingPage.click('*[data-reviews-pagination] .wt-action-group__item-container a');
                 await listingPage.waitFor(3000);
             }
 
@@ -114,9 +114,9 @@ exports.handleStart = async ({ request, page, browserController }) => {
             })
 
             listing = thisListing;
-
         }
         listing.product = url;
+
         console.log("listing", listing)
     };
 
