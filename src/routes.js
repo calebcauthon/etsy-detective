@@ -109,7 +109,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
                     return thisSegment.when == segment.when;
                 })
-                segment.count += alreadyCountedSegment.segment.count;
+                segment.count += alreadyCountedSegment.count;
             })
 
             listing = thisListing;
