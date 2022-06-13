@@ -88,7 +88,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                     //nextPageElement.click();
                 }
 
-                return {
+                return Promise.resolve({
                     nextPageElement,
                     hasMoreReviews,
                     title: productName,
@@ -97,7 +97,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                     price: priceElement.text().trim(),
                     reviewsCount: reviewCount,
                     reviewsBySegment: reviewsBySegment
-                }
+                });
             });
             console.log("evaluating...done")
             console.log("thisListing", thisListing)
