@@ -37,6 +37,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
             href: "",
             price: "",
             reviewsCount: 0,
+            pageNumberReached: 0,
             reviewsBySegment: [
                 { when: ["June", "2022"], count: 0 },
                 { when: ["May", "2022"], count: 0 },
@@ -103,6 +104,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 await listingPage.waitFor(3000);
             }
 
+            thisListing.pageNumberReached = listing.pageNumberReached + 1;
             thisListing.reviewsBySegment.forEach(segment => {
                 var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
                     return thisSegment.when[0] == segment.when[0] && thisSegment.when[1] == segment.when[1];
