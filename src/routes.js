@@ -56,35 +56,33 @@ exports.handleStart = async ({ request, page, browserController }) => {
 
                 var reviewsBadge = $('#same-listing-reviews-tab .wt-badge')
                 var reviewCount = 0;
-                if (reviewsBadge.length > 0) {
-                    reviewCount = reviewsBadge.text().trim()
-                } else {
-                    var reviewElements = $('*[data-review-region]');
-                    var reviewsBySegment = [
-                        { when: ["June", "2022"], count: 0 },
-                        { when: ["May", "2022"], count: 0 },
-                        { when: ["April", "2022"], count: 0 },
-                        { when: ["March", "2022"], count: 0 },
-                        { when: ["Feb", "2022"], count: 0 },
-                        { when: ["Jan", "2022"], count: 0 },
-                        { when: ["Dec", "2021"], count: 0 }
-                    ];
-                    reviewElements.each((index, element) => {
-                        var $element = $(element);
-                        if ($element.text().indexOf(productName) > -1) {
-                            reviewsBySegment.forEach(segment => {
-                                if ($element.text().indexOf(segment.when[0]) > -1 &&
-                                    $element.text().indexOf(segment.when[1]) > -1
-                                ) {
-                                    segment.count++;
-                                }
-                            });
-                        }
-                    });
-                    var nextPageElement = $('*[data-reviews-pagination] .wt-action-group__item-container a').last();
-                    if (nextPageElement.attr('aria-disabled') != "true") {
-                        hasMoreReviews = true;    
+                var reviewsBySegment = [
+                    { when: ["June", "2022"], count: 0 },
+                    { when: ["May", "2022"], count: 0 },
+                    { when: ["April", "2022"], count: 0 },
+                    { when: ["March", "2022"], count: 0 },
+                    { when: ["Feb", "2022"], count: 0 },
+                    { when: ["Jan", "2022"], count: 0 },
+                    { when: ["Dec", "2021"], count: 0 }
+                ];
+
+                var reviewElements = $('*[data-review-region]');
+                reviewElements.each((index, element) => {
+                    var $element = $(element);
+                    if ($element.text().indexOf(productName) > -1) {
+                        reviewsBySegment.forEach(segment => {
+                            if ($element.text().indexOf(segment.when[0]) > -1 &&
+                                $element.text().indexOf(segment.when[1]) > -1
+                            ) {
+                                segment.count++;
+                            }
+                        });
                     }
+                });
+
+                var nextPageElement = $('*[data-reviews-pagination] .wt-action-group__item-container a').last();
+                if (nextPageElement.attr('aria-disabled') != "true") {
+                    hasMoreReviews = true;    
                 }
 
                 return {
