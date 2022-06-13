@@ -29,21 +29,93 @@ exports.handleStart = async ({ request, page, browserController }) => {
         await Apify.utils.puppeteer.injectJQuery(listingPage);
         await listingPage.waitForSelector('.cart-col a[href*="shop"]', { timeout: 10000 });
 
-        var seller = await listingPage.evaluate(() => {
-            var shopLinkElement = $('.cart-col a[href*="shop"]').first();
-            var priceElement = $('div[data-buy-box-region="price"] p').first();
+        var hasReviews = true;
 
-            var reviewsBadge = $('#same-listing-reviews-tab .wt-badge')
+        var listing = {
+            title: "",
+            name: "",
+            href: "",
+            price: "",
+            reviewsCount: 0,
+            reviewsBySegment: [
+                { when: ["June", "2022"], count: 0 },
+                { when: ["May", "2022"], count: 0 },
+                { when: ["April", "2022"], count: 0 },
+                { when: ["March", "2022"], count: 0 },
+                { when: ["Feb", "2022"], count: 0 },
+                { when: ["Jan", "2022"], count: 0 },
+                { when: ["Dec", "2021"], count: 0 }
+            ]
+        };
+        while(hasReviews) {
+            var thisListing = await listingPage.evaluate(() => {
+                var hasMoreReviews = false;
+                var productName = $('*[data-buy-box-listing-title]').text().trim();
+                var shopLinkElement = $('.cart-col a[href*="shop"]').first();
+                var priceElement = $('div[data-buy-box-region="price"] p').first();
 
-            return {
-                name: shopLinkElement.text().trim(),
-                href: shopLinkElement.attr('href'),
-                price: priceElement.text().trim(),
-                reviewsCount: reviewsBadge.text().trim()
+                var reviewsBadge = $('#same-listing-reviews-tab .wt-badge')
+                var reviewCount = 0;
+                if (reviewsBadge.length > 0) {
+                    reviewCount = reviewsBadge.text().trim()
+                } else {
+                    var reviewElements = $('*[data-review-region]');
+                    var reviewsBySegment = [
+                        { when: ["June", "2022"], count: 0 },
+                        { when: ["May", "2022"], count: 0 },
+                        { when: ["April", "2022"], count: 0 },
+                        { when: ["March", "2022"], count: 0 },
+                        { when: ["Feb", "2022"], count: 0 },
+                        { when: ["Jan", "2022"], count: 0 },
+                        { when: ["Dec", "2021"], count: 0 }
+                    ];
+                    reviewElements.each((index, element) => {
+                        var $element = $(element);
+                        if ($element.text().indexOf(productName) > -1) {
+                            reviewsBySegment.forEach(segment => {
+                                if ($element.text().indexOf(segment.when[0]) > -1 &&
+                                    $element.text().indexOf(segment.when[1]) > -1
+                                ) {
+                                    segment.count++;
+                                }
+                            });
+                        }
+                    });
+                    var nextPageElement = $('*[data-reviews-pagination] .wt-action-group__item-container a').last();
+                    if (nextPageElement.attr('aria-disabled') != "true") {
+                        hasMoreReviews = true;    
+                    }
+                }
+
+                return {
+                    hasMoreReviews,
+                    title: productName,
+                    name: shopLinkElement.text().trim(),
+                    href: shopLinkElement.attr('href'),
+                    price: priceElement.text().trim(),
+                    reviewsCount: reviewCount,
+                    reviewsBySegment: reviewsBySegment
+                }
+            });
+
+            hasReviews = listing.hasMoreReviews;
+
+            if(hasReviews) {
+                await listingPage.click('*[data-reviews-pagination] .wt-action-group__item-container a');
+                await listingPage.waitFor(3000);
             }
-        });
 
-        console.log("seller", seller)
+            thisListing.reviewsBySegment.forEach(segment => {
+                var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
+                    return thisSegment.when == segment.when;
+                })
+                thisListing.segment.count += alreadyCountedSegment.segment.count;
+            })
+
+            listing = thisListing;
+        }
+
+        console.log("listing", listing)
     };
 
     console.log("done with handle start")
