@@ -14,7 +14,10 @@ Apify.main(async () => {
 
     const requestList = await Apify.openRequestList('start-urls', startUrls);
     const requestQueue = await Apify.openRequestQueue();
-    const proxyConfiguration = await Apify.createProxyConfiguration();
+    const proxyConfiguration = await Apify.createProxyConfiguration({
+        groups: ['RESIDENTIAL'],
+        countryCode: 'US',
+    });
 
     const crawler = new Apify.PuppeteerCrawler({
         requestList,
