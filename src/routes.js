@@ -100,6 +100,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 }
             });
             console.log("evaluating...done")
+            console.log("thisListing", thisListing)
 
             hasReviews = thisListing.hasMoreReviews;
 
