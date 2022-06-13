@@ -89,6 +89,7 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 }
 
                 return {
+                    nextPageElement,
                     hasMoreReviews,
                     title: productName,
                     name: shopLinkElement.text().trim(),
