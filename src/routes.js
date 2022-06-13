@@ -105,10 +105,14 @@ exports.handleStart = async ({ request, page, browserController }) => {
                 await listingPage.waitFor(3000);
             }
 
+            console.log("thisListing", thisListing);
+            console.log("listing", listing);
+
             thisListing.reviewsBySegment.forEach(segment => {
                 var alreadyCountedSegment = listing.reviewsBySegment.find(thisSegment => {
-                    return thisSegment.when == segment.when;
-                })
+                    return thisSegment.when[0] == segment.when[0] && thisSegment.when[1] == segment.when[1];
+                });
+
                 segment.count += alreadyCountedSegment.count;
             })
 
